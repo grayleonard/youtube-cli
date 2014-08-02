@@ -1,0 +1,18 @@
+{
+  "name": "youtube-cli",
+  "version": "0.0.0",
+  "description": "Youtube CLI",
+  "main": "index.js",
+  "dependencies": {
+    "google-auth-cli": "0.0.1",
+    "node-youtube-resumable-upload": "0.0.2",
+    "optimist": "^0.6.1",
+    "refresh-token": "0.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gray Leonard",
+  "license": "ISC"
+}
