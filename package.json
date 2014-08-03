@@ -6,7 +6,7 @@
   "dependencies": {
     "blessed": "0.0.37",
     "google-auth-cli": "0.0.1",
-    "node-youtube-resumable-upload": "0.0.2",
+    "node-youtube-resumable-upload": "0.0.3",
     "refresh-token": "0.0.2"
   },
   "devDependencies": {},

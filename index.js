@@ -59,6 +59,9 @@ var accountlist = blessed.list({ parent: uploadscreen, label: 'Accounts', top:'5
 
 var filemanager = blessed.filemanager({ parent: uploadscreen, label: 'Choose a file:', top: 'center', left: '40%', keys: true, width: '60%', height: '95%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}} );
 
+var uploadprogressbar = blessed.progressbar({
+	parent: uploadscreen, label: 'Progress', top: '70%', left: '5%', keys: false, width: '80%', height: '15%', border: { type: 'line' }, orientation: 'horizontal', barFg: "#0055FF", barBg: 'white', filled: 0});
+
 var uploadAccount = "";
 
 accountlist.on('select', function(selected) {
@@ -233,6 +236,15 @@ function initUpload(file, tokens) {
 			resumableUpload.tokens = tokens;
 			resumableUpload.filepath = file;
 			resumableUpload.metadata = metadata;
+			resumableUpload.monitor = true;
+			resumableUpload.eventEmitter.on('progress', function(progress) {
+				var numStrings = progress.split("/");
+				var numer = parseInt(numStrings[0]);
+				var denom = parseInt(numStrings[1]);
+				var percentage = Math.round(numer / denom);
+				uploadprogressbar.setProgress(percentage);
+				screen.render();
+			});
 			resumableUpload.initUpload(function(result) {
 				console.log("Video uploaded!\r\n" + result);
 				process.exit(code=0);
