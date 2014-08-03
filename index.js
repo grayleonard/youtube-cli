@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-//TODO: Add support for multiple accounts
 var fs = require('fs');
 
 var googleauth = require('google-auth-cli');
@@ -33,16 +32,7 @@ var menu = blessed.list({ parent: screen, top: 'center', left: '1%', width: '30%
 menu.setItems([ 'Set API Keys', 'Connect Accounts', 'Upload Video', 'Account List']);
  menu.prepend(new blessed.Text({ left: 2, content: ' Menu ' }));
 
-var actionbox = blessed.box({
-	parent: screen,
-	top: 'center',
-	left: '32%',
-	width: '67%',
-	height: '95%',
-	border: {
-		type: 'line'
-	}
-});
+var actionbox = blessed.box({ parent: screen, top: 'center', left: '32%', width: '67%', height: '95%', border: { type: 'line' } });
 
 var clientform = blessed.form({ parent: screen, label: 'Set API Keys', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
 var clientidInput = blessed.textbox({ parent: clientform, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '10%', name: 'client_id', label: 'Client ID', border: { type: 'line' } });
@@ -53,52 +43,21 @@ var submit = blessed.button({ parent: clientform, mouse: true, keys: true, shrin
 
 var cancel = blessed.button({ parent: clientform, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
-var connectscreen = blessed.form( {
-	parent: screen,
-	label: 'Connect Accounts',
-	top: 'center',
-	left: '32%',
-	keys: true,
-	width: '67%',
-	height: '95%',
-	border: {
-		type: 'line'
-	}
-});
+var connectscreen = blessed.form( { parent: screen, label: 'Connect Accounts', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } });
 
 var connectbutton = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '5%', width: 15, top: '45%', name: 'cancel', content: 'Oauth2', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
 var connectcancel = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
-connectbutton.on('press', function() {
-	connectscreen.submit();
-});
-
-connectcancel.on('press', function() {
-	connectscreen.cancel();
-});
-
-connectscreen.on('submit', function(data) {
-	connectAccountInit(data.account_name);
-	menu.focus();
-});
-
 var connectinputname = blessed.textbox({ parent: connectscreen, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '25%', name: 'account_name', label: 'Account Identifier', border: { type: 'line' } });
 
-var alertscreen = blessed.box({
-	parent: screen,
-	width: '50%',
-	height: '50%',
-	content: ''
-});
+var alertscreen = blessed.box({ parent: screen, width: '50%', height: '50%', content: '' });
 
-var uploadscreen = blessed.box({
-	parent: screen, label: 'Upload', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
+var uploadscreen = blessed.box({ parent: screen, label: 'Upload', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
 
-var accountlist = blessed.list({
-	parent: uploadscreen,
-	label: 'Accounts',
-	top:'5%', left: '5%', keys: true, width: '30%', height: '35%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}});
+var accountlist = blessed.list({ parent: uploadscreen, label: 'Accounts', top:'5%', left: '5%', keys: true, width: '30%', height: '35%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}});
+
+var filemanager = blessed.filemanager({ parent: uploadscreen, label: 'Choose a file:', top: 'center', left: '40%', keys: true, width: '60%', height: '95%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}} );
 
 var uploadAccount = "";
 
@@ -106,8 +65,7 @@ accountlist.on('select', function(selected) {
 	uploadAccount = selected.content;
 	filemanager.focus();
 });
-var filemanager = blessed.filemanager({
-	parent: uploadscreen, label: 'Choose a file:', top: 'center', left: '40%', keys: true, width: '60%', height: '95%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}} );
+
 filemanager.cwd = appFolder;
 filemanager.refresh();
 
@@ -145,6 +103,18 @@ cancel.on('press', function() {
 	clientform.cancel();
 });
 
+connectbutton.on('press', function() {
+	connectscreen.submit();
+});
+
+connectcancel.on('press', function() {
+	connectscreen.cancel();
+});
+
+connectscreen.on('submit', function(data) {
+	connectAccountInit(data.account_name);
+	menu.focus();
+});
 clientform.on('submit', function(data) {
 	saveClientKeys(data);
 	actionbox.setContent("Saved Client Keys!");
@@ -178,7 +148,6 @@ function initApp() {
 }
 
 initApp();
-// Append our box to the screen.
 
 function getUserHome() {
 	return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
@@ -272,54 +241,3 @@ function initUpload(file, tokens) {
 	});
 }
 
-/*
-//TODO: make function logic better
-var loadTokens = function(callback) {
-	// Loads .youtubecli token file
-	fs.readFile(tokenFile, function(err, data) {
-		if(!err) {
-			tokens = JSON.parse(data);
-			console.log(tokens);
-			callback(tokens);
-		} else {
-			googleauth({
-					access_type: 'offline',
-					scope: 'https://www.googleapis.com/auth/youtube'
-				},
-				{
-					client_id: secrets.client_id,
-					client_secret: secrets.client_secret,
-					port: 3000
-				},
-				function(err, authClient, tokens) {
-					fs.writeFileSync(tokenFile, JSON.stringify(tokens));
-					callback(tokens);
-				}
-			);
-		}
-	});
-}
-
-loadTokens(function(result) {
-	tokens = result;
-	tokenProvider = new GoogleTokenProvider({
-		refresh_token: tokens.refresh_token,
-		client_id: secrets.client_id,
-		client_secret: secrets.client_secret
-	});
-	tokenProvider.getToken(function(err, token) {
-		if(!err) {
-			tokens.access_token = token; //Set refreshed access_token
-			var resumableUpload = new resumableupload();
-			resumableUpload.tokens = tokens;
-			resumableUpload.filepath = argv.f;
-			resumableUpload.metadata = metadata;
-			resumableUpload.monitor = true;
-			resumableUpload.initUpload(function(result) {
-				console.log("Video uploaded!\r\n" + result);
-				process.exit(code=0);
-			});
-		}
-	});
-});
-*/
