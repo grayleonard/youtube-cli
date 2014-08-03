@@ -34,83 +34,84 @@ menu.setItems([ 'Set API Keys', 'Connect Accounts', 'Upload Video', 'Account Lis
 
 var actionbox = blessed.box({ parent: screen, top: 'center', left: '32%', width: '67%', height: '95%', border: { type: 'line' } });
 
-var clientform = blessed.form({ parent: screen, label: 'Set API Keys', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
-var clientidInput = blessed.textbox({ parent: clientform, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '10%', name: 'client_id', label: 'Client ID', border: { type: 'line' } });
+var clientscreen = blessed.form({ parent: screen, label: 'Set API Keys', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
 
-var clientsecretInput = blessed.textbox({ parent: clientform, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '25%', name: 'client_secret', label: 'Client Secret', border: { type: 'line' } });
+clientscreen._.client_id_input = blessed.textbox({ parent: clientscreen, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '10%', name: 'client_id', label: 'Client ID', border: { type: 'line' } });
 
-var submit = blessed.button({ parent: clientform, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '5%', width: 15, top: '45%', name: 'submit', content: 'submit', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
+clientscreen._.client_secret_input = blessed.textbox({ parent: clientscreen, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '25%', name: 'client_secret', label: 'Client Secret', border: { type: 'line' } });
 
-var cancel = blessed.button({ parent: clientform, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
+clientscreen._.submit = blessed.button({ parent: clientscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '5%', width: 15, top: '45%', name: 'submit', content: 'submit', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
+
+clientscreen._.cancel = blessed.button({ parent: clientscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
 var connectscreen = blessed.form( { parent: screen, label: 'Connect Accounts', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } });
 
-var connectbutton = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '5%', width: 15, top: '45%', name: 'cancel', content: 'Oauth2', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
+connectscreen._.oauth = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '5%', width: 15, top: '45%', name: 'cancel', content: 'Oauth2', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
-var connectcancel = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
+connectscreen._.cancel = blessed.button({ parent: connectscreen, mouse: true, keys: true, shrink: true, padding: { left: 1, right: 1 }, left: '30%', width: 15, top: '45%', name: 'cancel', content: 'cancel', style: { focus: { bg: 'blue', fg: 'white' }, hover: { bg: 'blue', fg: 'white' } }, border: { type: 'line' } });
 
-var connectinputname = blessed.textbox({ parent: connectscreen, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '25%', name: 'account_name', label: 'Account Identifier', border: { type: 'line' } });
+connectscreen._.inputname = blessed.textbox({ parent: connectscreen, keys: true, inputOnFocus: true, left: '5%', width: '90%', height: 3, top: '25%', name: 'account_name', label: 'Account Identifier', border: { type: 'line' } });
 
 var alertscreen = blessed.box({ parent: screen, width: '50%', height: '50%', content: '' });
 
 var uploadscreen = blessed.box({ parent: screen, label: 'Upload', top: 'center', left: '32%', keys: true, width: '67%', height: '95%', border: { type: 'line' } }); 
 
-var accountlist = blessed.list({ parent: uploadscreen, label: 'Accounts', top:'5%', left: '5%', keys: true, width: '30%', height: '35%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}});
+uploadscreen._.accountlist = blessed.list({ parent: uploadscreen, label: 'Accounts', top:'5%', left: '5%', keys: true, width: '30%', height: '35%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}});
 
-var filemanager = blessed.filemanager({ parent: uploadscreen, label: 'Choose a file:', top: 'center', left: '40%', keys: true, width: '60%', height: '95%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}} );
+uploadscreen._.filemanager = blessed.filemanager({ parent: uploadscreen, label: 'Choose a file:', top: 'center', left: '40%', keys: true, width: '60%', height: '95%', border: { type: 'line' }, style: { fg: 'white', hover: { bg: 'green' }}} );
 
-var uploadprogressbar = blessed.progressbar({
+uploadscreen._.uploadprogressbar = blessed.progressbar({
 	parent: uploadscreen, label: 'Progress', top: '70%', left: '5%', keys: false, width: '80%', height: '15%', border: { type: 'line' }, orientation: 'horizontal', barFg: "#0055FF", barBg: 'white', filled: 0});
 
 var uploadAccount = "";
 
-accountlist.on('select', function(selected) {
+uploadscreen._.accountlist.on('select', function(selected) {
 	uploadAccount = selected.content;
-	filemanager.focus();
+	uploadscreen._.filemanager.focus();
 });
 
-filemanager.cwd = appFolder;
-filemanager.refresh();
+uploadscreen._.filemanager.cwd = appFolder;
+uploadscreen._.filemanager.refresh();
 
 var uploadFile = "";
-filemanager.on('file', function(selected) {
+uploadscreen._.filemanager.on('file', function(selected) {
 	uploadFile = selected;
 	initUpload(uploadFile, loadTokens()[uploadAccount]);
 });
 menu.on('select', function(selected) {
 	if(selected.content == "Set API Keys") {
 		hideAll();
-		clientidInput.focus();
-		clientform.show();
+		clientscreen._.client_id_input.focus();
+		clientscreen.show();
 	}
 	if(selected.content == "Connect Accounts") {
 		hideAll();
 		connectscreen.show();
-		connectinputname.focus();
+		connectscreen._.inputname.focus();
 	}
 	if(selected.content == "Upload Video") {
 		hideAll();
 		uploadscreen.show();
-		accountlist.focus();
+		uploadscreen._.accountlist.focus();
 		getAccounts();
 	}
 	actionbox.setContent(selected.content);
 	screen.render();
 });
 
-submit.on('press', function() {
-	clientform.submit();
+clientscreen._.submit.on('press', function() {
+	clientscreen.submit();
 });
 
-cancel.on('press', function() {
-	clientform.cancel();
+clientscreen._.cancel.on('press', function() {
+	clientscreen.cancel();
 });
 
-connectbutton.on('press', function() {
+connectscreen._.oauth.on('press', function() {
 	connectscreen.submit();
 });
 
-connectcancel.on('press', function() {
+connectscreen._.cancel.on('press', function() {
 	connectscreen.cancel();
 });
 
@@ -118,14 +119,14 @@ connectscreen.on('submit', function(data) {
 	connectAccountInit(data.account_name);
 	menu.focus();
 });
-clientform.on('submit', function(data) {
+clientscreen.on('submit', function(data) {
 	saveClientKeys(data);
 	actionbox.setContent("Saved Client Keys!");
 	screen.append(actionbox);
 	menu.focus();
 });
 
-clientform.on('cancel', function() {
+clientscreen.on('cancel', function() {
 	menu.focus();
 });
 
@@ -136,9 +137,9 @@ connectscreen.on('cancel', function() {
 function initApp() {
 	screen.append(menu);
 	screen.append(actionbox);
-	screen.append(clientform);
+	screen.append(clientscreen);
 	screen.append(connectscreen);
-	clientform.hide();
+	clientscreen.hide();
 	connectscreen.hide();
 	actionbox.show();
 	menu.focus();
@@ -158,7 +159,7 @@ function getUserHome() {
 
 function hideAll() {
 	actionbox.hide();
-	clientform.hide();
+	clientscreen.hide();
 	connectscreen.hide();
 }
 
@@ -220,7 +221,7 @@ function getAccounts() {
 	for(accountName in accounts) {
 		accountList.push(accountName);
 	}
-	accountlist.setItems(accountList);
+	uploadscreen._.accountlist.setItems(accountList);
 }
 
 function initUpload(file, tokens) {
@@ -242,7 +243,7 @@ function initUpload(file, tokens) {
 				var numer = parseInt(numStrings[0]);
 				var denom = parseInt(numStrings[1]);
 				var percentage = Math.round(numer / denom);
-				uploadprogressbar.setProgress(percentage);
+				uploadscreen._.uploadprogressbar.setProgress(percentage);
 				screen.render();
 			});
 			resumableUpload.initUpload(function(result) {
