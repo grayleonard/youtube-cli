@@ -1,4 +1,7 @@
 Youtube CLI
 ===========
 
-Usage: ./index.js -f [filename] -t [title] -d [description] -p [privacy (private/public)]
+Install with `npm install`
+
+Uses a ncurses UI, navigate with the up and down arrows and escape.
+Still a WIP but has basic uploading capability at this time.
