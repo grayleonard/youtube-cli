@@ -4,6 +4,7 @@
   "description": "Youtube CLI",
   "main": "index.js",
   "dependencies": {
+    "blessed": "0.0.37",
     "google-auth-cli": "0.0.1",
     "node-youtube-resumable-upload": "0.0.2",
     "optimist": "^0.6.1",
